@@ -1,0 +1,8 @@
+Django>=5.2.7
+mysqlclient
+dj-database-url
+whitenoise
+django-cors-headers
+gunicorn
+sendgrid-django==4.1.0
+requests
