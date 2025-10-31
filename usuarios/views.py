@@ -26,6 +26,7 @@ import os
 from django.views.decorators.http import require_GET
 import re
 from rest_framework.decorators import action
+from django.db.models.functions import ExtractMonth, ExtractYear
 
 @csrf_exempt
 def registro_view(request):
@@ -430,3 +431,37 @@ def listar_compras_view(request):
         serializer = MaestroCompraSerializer(compras, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+@require_GET
+def estadisticas_ventas_compras(request):
+    try:
+        year = int(request.GET.get('year', datetime.now().year))
+        # Ventas por mes
+        ventas = (
+            MaestroPedido.objects
+            .filter(fecha_registro__year=year)
+            .annotate(mes=ExtractMonth('fecha_registro'))
+            .values('mes')
+            .order_by('mes')
+            .annotate(total=models.Sum('total'))
+        )
+        # Compras por mes
+        compras = (
+            MaestroCompra.objects
+            .filter(fecha_registro__year=year)
+            .annotate(mes=ExtractMonth('fecha_registro'))
+            .values('mes')
+            .order_by('mes')
+            .annotate(total=models.Sum('total'))
+        )
+        ventas_dict = {v['mes']: float(v['total']) for v in ventas}
+        compras_dict = {c['mes']: float(c['total']) for c in compras}
+        resultado = {
+            'ventas': [ventas_dict.get(m, 0.0) for m in range(1, 13)],
+            'compras': [compras_dict.get(m, 0.0) for m in range(1, 13)],
+            'beneficio': [ventas_dict.get(m, 0.0) - compras_dict.get(m, 0.0) for m in range(1, 13)]
+        }
+        return JsonResponse(resultado, safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
