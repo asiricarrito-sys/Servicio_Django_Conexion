@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.utils import timezone
 from .forms import RegistroForm, LoginForm
-from .models import Usuario, Producto
+from .models import Usuario, Producto, MaestroPedido, MaestroCompra
 import requests
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -465,3 +465,4 @@ def estadisticas_ventas_compras(request):
         return JsonResponse(resultado, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
