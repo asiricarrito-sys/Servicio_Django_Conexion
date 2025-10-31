@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-v02#l*vz09z2er+2f^nri
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() in ("1", "true", "yes")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "asiricarritos.onrender.com,localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "servicio-django-conexion.onrender.com,localhost,127.0.0.1").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -139,6 +139,7 @@ else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     SENDGRID_SANDBOX_MODE_IN_DEBUG = False
     SENDGRID_ECHO_TO_STDOUT = False
+
 
 
 
