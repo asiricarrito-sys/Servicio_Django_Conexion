@@ -26,8 +26,10 @@ urlpatterns = [
     path('api/cambiar_estado_pedido/<int:pk>/', CambiarEstadoPedidoAPIView.as_view(), name='cambiar_estado_pedido'),
     path('api/registrar_compra/', registrar_compra_view, name='registrar_compra'),
     path('api/listar_compras/', listar_compras_view, name='listar_compras'),
+    path('api/estadisticas_ventas_compras/', views.estadisticas_ventas_compras, name='estadisticas_ventas_compras'),
     path('api/', include(router.urls)),  # <-- Agrega el router bajo /api/
 ]
+
 
 
 
