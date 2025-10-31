@@ -27,6 +27,7 @@ from django.views.decorators.http import require_GET
 import re
 from rest_framework.decorators import action
 from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db import models
 
 @csrf_exempt
 def registro_view(request):
@@ -465,4 +466,5 @@ def estadisticas_ventas_compras(request):
         return JsonResponse(resultado, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
 
